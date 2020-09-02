@@ -27,9 +27,8 @@ const Profile = (props) => {
         },
     };
     const selectPhoto = () => {
-        console.log('select photo');
         ImagePicker.showImagePicker(options, (response) => {
-            console.log('Response = ', response);
+            // console.log('Response = ', response);
 
             if (response.didCancel) {
                 //console.log('User cancelled image picker');
@@ -68,15 +67,15 @@ const Profile = (props) => {
                 <View style={styles.profile}>
 
                     <View style={styles.textContainer}>
-                        <Text style={styles.text}> Username : </Text>
+                        <Text style={styles.text}> Kullanıcı Adı : </Text>
                         <Text style={styles.textDetail}>{user.username}</Text>
                     </View>
                     <View style={styles.textContainer}>
-                        <Text style={styles.text}> Full Name : </Text>
+                        <Text style={styles.text}> İsim : </Text>
                         <Text style={styles.textDetail}>{user.fullName}</Text>
                     </View>
                     <View style={[styles.textContainer]}>
-                        <Text style={styles.text}> e-mail : </Text>
+                        <Text style={styles.text}> Mail : </Text>
                         <Text style={styles.textDetail}>{user.email}</Text>
                     </View>
 
@@ -89,11 +88,11 @@ const Profile = (props) => {
                         <Text style={styles.textDetail}>{user.dailyGoal}</Text>
                     </View>
                     <View style={styles.textContainer}>
-                        <Text style={styles.text}> Full Name : </Text>
+                        <Text style={styles.text}> Çalışma Süresi : </Text>
                         <Text style={styles.textDetail}>{user.studyingTime}</Text>
                     </View>
                     <View style={styles.textContainer}>
-                        <Text style={styles.text}> e-mail : </Text>
+                        <Text style={styles.text}> Dinlenme Süresi : </Text>
                         <Text style={styles.textDetail}>{user.restingTime}</Text>
                     </View>
                 </View>
