@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
-//import { ScrollView } from 'react-native-gesture-handler';
-
+import ImagePicker from 'react-native-image-picker';
 
 const Profile = (props) => {
 
+
+    const [image, setImage] = useState();
+    const [change, setChange] = useState();
 
     const user = {
         username: 'user0123',
@@ -16,8 +18,34 @@ const Profile = (props) => {
         restingTime: 15,
     }
 
+    const options = {
+        title: 'Select Avatar',
+        //customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+        storageOptions: {
+            skipBackup: true,
+            path: 'images',
+        },
+    };
     const selectPhoto = () => {
         console.log('select photo');
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                //console.log('User cancelled image picker');
+            } else if (response.error) {
+                //console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                //console.log('User tapped custom button: ', response.customButton);
+            } else {
+                const source = { uri: response.uri };
+
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+                setImage(source);
+            }
+        });
     }
 
     return (
@@ -26,7 +54,13 @@ const Profile = (props) => {
                 {/* Profile picture  */}
                 <View style={styles.photo}>
                     <TouchableOpacity onPress={() => selectPhoto()} style={{ borderRadius: 25, backgroundColor: 'green', borderWidth: 3 }}>
-                        <Image style={{ height: 150, width: 150 }} source={require('../../images/appomodoro_icon.png')} />
+                        {
+                            image ?
+                                <Image style={{ height: 150, width: 150, borderRadius: 25 }} source={image} />
+                                :
+                                <Image style={{ height: 150, width: 150, borderRadius: 25 }} source={require('../../images/appomodoro_icon.png')} />
+                        }
+
                     </TouchableOpacity>
 
                 </View>
