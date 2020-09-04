@@ -8,7 +8,7 @@ const Profile = (props) => {
 
 
     const [image, setImage] = useState();
-    const [dailyGoal, setDilyGoal] = useState(5);
+    const [dailyGoal, setDailyGoal] = useState(5);
     const [studyingTime, setStudyingTime] = useState(45);
     const [restingTime, setRestingTime] = useState(15);
 
@@ -113,7 +113,7 @@ const Profile = (props) => {
 
     return (
         <SafeAreaView>
-            <ScrollView >
+            <ScrollView>
                 {/* Profile picture  */}
                 <View style={styles.photo}>
                     <TouchableOpacity onPress={() => selectPhoto()} style={{ borderRadius: 25, backgroundColor: '#4495cb', borderWidth: 3 }}>
@@ -153,7 +153,7 @@ const Profile = (props) => {
                     <View style={styles.textContainer}>
                         <Text style={[styles.text]}> Günlük Hedef : </Text>
                         {editGoal ?
-                            <Input keyboardType='number-pad' autoFocus={true} onChangeText={(value) => { setDilyGoal(value); }} style={styles.textDetail} />
+                            <Input keyboardType='number-pad' autoFocus={true} onChangeText={(value) => { setDailyGoal(value); }} style={styles.textDetail} />
                             :
                             <TouchableOpacity onPress={() => { setEditGoal(true) }}>
                                 <Text style={styles.textGoalDetail}>{user.dailyGoal}</Text>
@@ -190,11 +190,9 @@ const Profile = (props) => {
                     <Image style={{ height: 30, width: 30, }} source={require('../../images/logout.png')} />
                 </TouchableOpacity>
 
-            </ScrollView >
+            </ScrollView>
         </SafeAreaView>
-
     );
-
 }
 const styles = {
     photo: {
