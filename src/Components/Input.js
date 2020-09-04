@@ -9,11 +9,12 @@ const Input = (props) => (
         secureTextEntry={props.secureTextEntry}
         keyboardType={props.keyboardType}
         multiline={props.multiline}
+        autoFocus={props.autoFocus}
         value={props.value}
         onChangeText={(value) => props.onChangeText(value)}
         style={[{
             padding: 5,
-            height: height*0.1,
+            height: height * 0.1,
             color: '#424242',
             borderBottomColor: '#b7b7b7',
             borderBottomWidth: 1
