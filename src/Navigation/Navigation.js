@@ -56,7 +56,7 @@ const Tab = createBottomTabNavigator();
 const Navigation=() =>{
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator initialRouteName="MainPage">
         <Tab.Screen name="Stats" component={Stats} />
         <Tab.Screen name="MainPage" component={MainPage} />
         <Tab.Screen name="Profile" component={Profile} />
