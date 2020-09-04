@@ -5,13 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import MainPage from './Screens/Main/MainPage'
-import Profile from './Screens/Main/Profile'
-import Stats from './Screens/Main/Stats'
+import MainPage from '../Screens/Main/MainPage'
+import Profile from '../Screens/Main/Profile'
+import Stats from '../Screens/Main/Stats'
 
-import FirstScreen from './Screens/Auth/FirstScreen'
-import Login from './Screens/Auth/Login'
-import Register from './Screens/Auth/Register'
+import FirstScreen from '../Screens/Auth/FirstScreen'
+import Login from '../Screens/Auth/Login'
+import Register from '../Screens/Auth/Register'
 
 const AuthStack = createStackNavigator();
 
@@ -65,4 +65,4 @@ const Navigation=() =>{
   );
 }
 
-export default Router;
+export default Navigation;
