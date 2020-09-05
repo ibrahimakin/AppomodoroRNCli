@@ -56,11 +56,11 @@ const Tab = createBottomTabNavigator();
 const Navigation=() =>{
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName="MainPage">
-        <Tab.Screen name="Stats" component={Stats} />
-        <Tab.Screen name="MainPage" component={MainPage} />
-        <Tab.Screen name="Profile" component={Profile} />
-      </Tab.Navigator>
+        <AuthStack.Navigator initialRouteName="FirstScreen">
+        <AuthStack.Screen name="FirstScreen" component={FirstScreen}/>
+        <AuthStack.Screen name="Login" component={Login}/>
+        <AuthStack.Screen name="Register" component={Register}/>
+        </AuthStack.Navigator>
     </NavigationContainer>
   );
 }

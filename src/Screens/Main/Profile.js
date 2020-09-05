@@ -208,7 +208,7 @@ const styles = {
     textContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-between',
         marginBottom: 10,
     },
     text: {
