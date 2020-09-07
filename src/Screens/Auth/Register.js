@@ -28,8 +28,12 @@ const Register = (props) => {
         const params = {
             email,//"deneme@test.com",
             password,//"1234567"
+            username,
             name,
-            username
+            image: '',
+            dailygoal: 8,
+            worktime: 25,
+            resttime: 5,
         };
         props.register(params);
     }

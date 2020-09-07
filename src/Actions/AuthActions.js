@@ -14,7 +14,7 @@ export const login = (params) => {
 
                 //read user from the database
                 firestore()
-                    .collection('Users')
+                    .collection('UserInfo')
                     .doc(uid)
                     .get().then((user) => {
                         const userParams = {
@@ -51,12 +51,16 @@ export const register = (params) => {
 
                 //write user to the database
                 const setData = {
-                    name: params.name,
-                    username: params.username,
                     email: params.email,
+                    username: params.username,
+                    name: params.name,
+                    image: params.image,
+                    dailygoal: params.dailygoal,
+                    worktime: params.worktime,
+                    resttime: params.resttime,
                 }
                 firestore()
-                    .collection('Users')
+                    .collection('UserInfo')
                     .doc(uid)
                     .set(setData)
                     .then(() => {
