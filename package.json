@@ -43,5 +43,9 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/ibrahimakin/AppomodoroRNCli.git",
+  "author": "ibrahim AKIN <ibrahim-akin@msn.com>",
+  "license": "MIT"
 }

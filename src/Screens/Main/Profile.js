@@ -3,6 +3,8 @@ import { Alert, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, K
 import { Input } from '../../Components';
 import ImagePicker from 'react-native-image-picker';
 import { set } from 'react-native-reanimated';
+import { connect } from 'react-redux';
+import { signOut } from '../../Actions';
 
 const Profile = (props) => {
 
@@ -105,7 +107,7 @@ const Profile = (props) => {
                     onPress: () => { console.log("Çıkış iptal") },
                     style: "cancel"
                 },
-                { text: "OK", onPress: () => { console.log("Çıkış yapılacak") } }
+                { text: "OK", onPress: () => { props.signOut(); } }
             ],
             { cancelable: false }
         );
@@ -227,4 +229,9 @@ const styles = {
     }
 }
 
-export default Profile;
+const mapStateToProps = ({ profileResponse }) => {
+    const { loading, user } = profileResponse;
+    return { loading, user };
+};
+
+export default connect(mapStateToProps, { signOut })(Profile);
