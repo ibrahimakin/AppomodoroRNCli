@@ -1,6 +1,9 @@
 import { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, GET_USERINFO_START, GET_USERINFO_SUCCESS, GET_USERINFO_FAILED, UPDATE_USERINFO_START, UPDATE_USERINFO_SUCCESS, UPDATE_USERINFO_FAILED } from './types';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import { Alert } from 'react-native';
+import { utils } from '@react-native-firebase/app';
+
 
 
 export const getUserInfo = (params) => {
@@ -39,22 +42,55 @@ export const updateUserInfo = (params) => {
 
         const uid = params.payload.uid;
         const payload = params.payload;
-        firestore()
-            .collection('UserInfo')
-            .doc(uid)
-            .update({
-                image: payload.image,
-                dailygoal: payload.dailygoal,
-                worktime: payload.worktime,
-                resttime: payload.resttime,
-            })
-            .then(() => {
-                //console.log('User updated!');
-                dispatch({ type: LOGIN_SUCCESS, payload });
 
-            }).catch(() => {
-                //console.log('USER INFO not updated');
-                dispatch({ type: LOGIN_FAILED });
-            });
+        if (params.imageChanged && payload.image != "") {
+            const reference = storage().ref(`/images/${uid}`);
+
+            reference.putFile(payload.image).then(() => {
+
+                reference.getDownloadURL().then((imageURL) => {
+                    firestore()
+                        .collection('UserInfo')
+                        .doc(uid)
+                        .update({
+                            image: imageURL,
+                            dailygoal: payload.dailygoal,
+                            worktime: payload.worktime,
+                            resttime: payload.resttime,
+                        })
+                        .then(() => {
+
+                            dispatch({ type: LOGIN_SUCCESS, payload });
+
+                        }).catch(() => {
+                            dispatch({ type: LOGIN_FAILED });
+                        });
+                })
+            }).catch(error => {
+                //console.log('Hata Resim Yükleme: ', error);
+                Alert.alert("Hata", "Resim Yüklenemedi:\n" + error);
+            })
+
+        }
+        else {
+            firestore()
+                .collection('UserInfo')
+                .doc(uid)
+                .update({
+                    image: payload.image,
+                    dailygoal: payload.dailygoal,
+                    worktime: payload.worktime,
+                    resttime: payload.resttime,
+                })
+                .then(() => {
+                    //console.log('User updated!');
+
+                    dispatch({ type: LOGIN_SUCCESS, payload });
+
+                }).catch(() => {
+                    //console.log('USER INFO not updated');
+                    dispatch({ type: LOGIN_FAILED });
+                });
+        }
     }
 }

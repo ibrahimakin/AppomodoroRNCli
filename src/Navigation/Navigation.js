@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
-//import { Icon } from 'native-base';
+import { Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -57,30 +57,27 @@ const TabStackScreen = () => {
     return (
         <TabStack.Navigator
             initialRouteName="Home"
-        /*screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-                let iconName;
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
 
-                if (route.name === 'Home') {
-                    iconName = 'home'
-                } else if (route.name === 'Search') {
-                    iconName = 'search';
-                } else if (route.name === 'Notifications') {
-                    iconName = 'bell';
-                } else if (route.name === 'Messages') {
-                    iconName = 'envelope-open';
-                }
+                    if (route.name === "Home") {
+                        iconName = 'home'
+                    } else if (route.name === "Statistics") {
+                        iconName = 'signal';
+                    } else if (route.name === "Profile") {
+                        iconName = 'user';
+                    }
 
-
-                // You can return any component that you like here!
-            return <Icon name={iconName} type='FontAwesome' size={size} style={{ color: focused ? colors.main : color }} />;
-            },
-        })}
-        tabBarOptions={{
-            //activeTintColor: 'tomato',
-            inactiveTintColor: 'gray',
-            showLabel: false,
-        }}*/
+                    // You can return any component that you like here!
+                    return <Icon name={iconName} type='FontAwesome' size={size} style={{ color: focused ? '#4495cb' : color }} />;
+                },
+            })}
+            tabBarOptions={{
+                //activeTintColor: 'tomato',
+                inactiveTintColor: 'gray',
+                showLabel: false,
+            }}
         >
             <TabStack.Screen name="Statistics" component={Stats} />
             <TabStack.Screen name="Home" component={MainPage} />

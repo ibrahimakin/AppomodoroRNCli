@@ -13,6 +13,7 @@ const Profile = (props) => {
     const [studyingTime, setStudyingTime] = useState(props.user.worktime);
     const [restingTime, setRestingTime] = useState(props.user.resttime);
     const [change, setChange] = useState(false);
+    const [imageChanged, setImageChanged] = useState(false);
 
     const [editGoal, setEditGoal] = useState(false);
     const [editStudying, setEditStudying] = useState(false);
@@ -34,6 +35,11 @@ const Profile = (props) => {
             setChange(true);
         }
         else { setChange(false); }
+        if (props.user.image != image) {
+            setImageChanged(true);
+        }
+        else { setImageChanged(false); }
+
     }, [props.user, dailyGoal, studyingTime, restingTime, image]);
 
     const _keyboardDidShow = () => {
@@ -47,17 +53,22 @@ const Profile = (props) => {
         setEditStudying(false);
     };
 
-    const options = {
-        title: 'Select Avatar',
-        //customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-        storageOptions: {
-            skipBackup: true,
-            path: 'images',
-        },
-    };
+
     const selectPhoto = () => {
-        ImagePicker.showImagePicker(options, (response) => {
-            // console.log('Response = ', response);
+        const options = {
+            title: 'Profil Fotoğrafı Seçiniz',
+            quality: 0.2,
+            takePhotoButtonTitle: 'Resim Çek',
+            chooseFromLibraryButtonTitle: 'Galeriden Seç',
+            cancelButtonTitle: 'Kapat',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+
+        ImagePicker.showImagePicker(options, async (response) => {
+            //console.log('Response = ', response);
 
             if (response.didCancel) {
                 //console.log('User cancelled image picker');
@@ -66,12 +77,8 @@ const Profile = (props) => {
             } else if (response.customButton) {
                 //console.log('User tapped custom button: ', response.customButton);
             } else {
-                const source = { uri: response.uri };
-
-                // You can also display the image using data:
-                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-                setImage(source);
+                const uri = response.uri;
+                setImage(uri);
             }
         });
     }
@@ -104,7 +111,7 @@ const Profile = (props) => {
             worktime: studyingTime,
             resttime: restingTime,
         }
-        props.updateUserInfo({ payload });
+        props.updateUserInfo({ imageChanged, payload });
         _keyboardDidHide();
     }
     const UndoChanges = () => {
@@ -141,7 +148,7 @@ const Profile = (props) => {
                         <TouchableOpacity onPress={() => selectPhoto()} style={{ borderRadius: 25, backgroundColor: '#4495cb', borderWidth: 3 }}>
                             {
                                 image != "" ?
-                                    <Image style={{ height: 150, width: 150, borderRadius: 25 }} source={image} />
+                                    <Image style={{ height: 150, width: 150, borderRadius: 25 }} source={{ uri: image }} /*source={{ url: image }}*/ />
                                     :
                                     <Image style={{ height: 150, width: 150, borderRadius: 25 }} source={require('../../images/appomodoro_icon.png')} />
                             }
