@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
-
+import { Icon } from 'native-base';
+import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -51,18 +52,54 @@ const AuthStackScreen = () => {
     )
 }
 
-const Tab = createBottomTabNavigator();
+const TabStack = createBottomTabNavigator();
+const TabStackScreen = () => {
+    return (
+        <TabStack.Navigator
+            initialRouteName="Home"
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
 
-const Navigation=() =>{
-  return (
-    <NavigationContainer>
-        <AuthStack.Navigator initialRouteName="FirstScreen">
-        <AuthStack.Screen name="FirstScreen" component={FirstScreen}/>
-        <AuthStack.Screen name="Login" component={Login}/>
-        <AuthStack.Screen name="Register" component={Register}/>
-        </AuthStack.Navigator>
-    </NavigationContainer>
-  );
+                    if (route.name === "Home") {
+                        iconName = 'home'
+                    } else if (route.name === "Statistics") {
+                        iconName = 'signal';
+                    } else if (route.name === "Profile") {
+                        iconName = 'user';
+                    }
+
+                    // You can return any component that you like here!
+                    return <Icon name={iconName} type='FontAwesome' size={size} style={{ color: focused ? '#4495cb' : color }} />;
+                },
+            })}
+            tabBarOptions={{
+                //activeTintColor: 'tomato',
+                inactiveTintColor: 'gray',
+                showLabel: false,
+            }}
+        >
+            <TabStack.Screen name="Statistics" component={Stats} />
+            <TabStack.Screen name="Home" component={MainPage} />
+            <TabStack.Screen name="Profile" component={Profile} />
+        </TabStack.Navigator>);
+};
+
+const Navigation = (props) => {
+    return (
+        <NavigationContainer>
+            {!props.user ?
+                <AuthStackScreen />
+                :
+                <TabStackScreen />
+            }
+        </NavigationContainer>
+    );
 }
 
-export default Navigation;
+const mapStateToProps = ({ authResponse }) => {
+    const { loading, user } = authResponse;
+    return { loading, user };
+};
+
+export default connect(mapStateToProps, {})(Navigation);

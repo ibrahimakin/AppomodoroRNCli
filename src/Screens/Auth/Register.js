@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Alert, Text, View, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { Button, Input } from '../../Components/';
+import { connect } from 'react-redux';
+import { register } from "../../Actions";
 import { colors } from '../../style';
 
 const Register = (props) => {
@@ -26,8 +28,12 @@ const Register = (props) => {
         const params = {
             email,//"deneme@test.com",
             password,//"1234567"
+            username,
             name,
-            username
+            image: '',
+            dailygoal: 8,
+            worktime: 25,
+            resttime: 5,
         };
         props.register(params);
     }
@@ -51,7 +57,7 @@ const Register = (props) => {
                 <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
                     <Text style={styles.blueText}>  Login</Text>
                 </TouchableOpacity>
-                <Button text='Register' style={{ padding: 10, width: 150, height: 40}} onPress={RegisterClick} loading={props.loading} />
+                <Button text='Register' style={{ padding: 10, width: 150, height: 40 }} onPress={RegisterClick} loading={props.loading} />
             </View>
         </SafeAreaView>
     );
@@ -65,4 +71,9 @@ const styles = {
 
 }
 
-export default Register;
+const mapStateToProps = ({ authResponse }) => {
+    const { loading, user } = authResponse;
+    return { loading, user };
+}
+
+export default connect(mapStateToProps, { register })(Register);

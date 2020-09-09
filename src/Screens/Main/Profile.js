@@ -1,31 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, Keyboard } from 'react-native';
-import { Input } from '../../Components';
+import { Input, Button } from '../../Components';
 import ImagePicker from 'react-native-image-picker';
-import { set } from 'react-native-reanimated';
+//import { set } from 'react-native-reanimated';
+import { connect } from 'react-redux';
+import { signOut, updateUserInfo, /*getUserInfo*/ } from '../../Actions';
 
 const Profile = (props) => {
 
-
-    const [image, setImage] = useState();
-    const [dailyGoal, setDailyGoal] = useState(5);
-    const [studyingTime, setStudyingTime] = useState(45);
-    const [restingTime, setRestingTime] = useState(15);
+    const [image, setImage] = useState(props.user.image);
+    const [dailyGoal, setDailyGoal] = useState(props.user.dailygoal);
+    const [studyingTime, setStudyingTime] = useState(props.user.worktime);
+    const [restingTime, setRestingTime] = useState(props.user.resttime);
+    const [change, setChange] = useState(false);
+    const [imageChanged, setImageChanged] = useState(false);
 
     const [editGoal, setEditGoal] = useState(false);
     const [editStudying, setEditStudying] = useState(false);
     const [editResting, setEditResting] = useState(false);
-
-    const user = {
-        username: 'user0123',
-        fullName: 'Deneme TEST',
-        email: 'deneme@test.com',
-        image,
-
-        dailyGoal,
-        studyingTime,
-        restingTime,
-    }
 
     useEffect(() => {
         Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
@@ -38,6 +30,18 @@ const Profile = (props) => {
         };
     }, []);
 
+    useEffect(() => {
+        if (props.user.dailygoal != dailyGoal || props.user.worktime != studyingTime || props.user.resttime != restingTime || props.user.image != image) {
+            setChange(true);
+        }
+        else { setChange(false); }
+        if (props.user.image != image) {
+            setImageChanged(true);
+        }
+        else { setImageChanged(false); }
+
+    }, [props.user, dailyGoal, studyingTime, restingTime, image]);
+
     const _keyboardDidShow = () => {
         //alert("Keyboard Shown");
     };
@@ -49,17 +53,22 @@ const Profile = (props) => {
         setEditStudying(false);
     };
 
-    const options = {
-        title: 'Select Avatar',
-        //customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-        storageOptions: {
-            skipBackup: true,
-            path: 'images',
-        },
-    };
+
     const selectPhoto = () => {
-        ImagePicker.showImagePicker(options, (response) => {
-            // console.log('Response = ', response);
+        const options = {
+            title: 'Profil Fotoğrafı Seçiniz',
+            quality: 0.2,
+            takePhotoButtonTitle: 'Resim Çek',
+            chooseFromLibraryButtonTitle: 'Galeriden Seç',
+            cancelButtonTitle: 'Kapat',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+
+        ImagePicker.showImagePicker(options, async (response) => {
+            //console.log('Response = ', response);
 
             if (response.didCancel) {
                 //console.log('User cancelled image picker');
@@ -68,18 +77,14 @@ const Profile = (props) => {
             } else if (response.customButton) {
                 //console.log('User tapped custom button: ', response.customButton);
             } else {
-                const source = { uri: response.uri };
-
-                // You can also display the image using data:
-                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-                setImage(source);
+                const uri = response.uri;
+                setImage(uri);
             }
         });
     }
 
     const removePhoto = () => {
-        if (user.image == null) { return; }
+        if (image == "") { return; }
         Alert.alert(
             "Fotoğrafı Kaldır",
             "Fotoğrafı kaldırmak istediğinize emin misiniz?",
@@ -89,108 +94,143 @@ const Profile = (props) => {
                     onPress: () => { },
                     style: "cancel"
                 },
-                { text: "OK", onPress: () => { setImage(null); } }
+                { text: "OK", onPress: () => { setImage(""); } }
             ],
             { cancelable: false }
         );
     }
 
+    const SaveChanges = () => {
+        const payload = {
+            uid: props.user.uid,
+            email: props.user.email,
+            username: props.user.username,
+            name: props.user.name,
+            image,
+            dailygoal: dailyGoal,
+            worktime: studyingTime,
+            resttime: restingTime,
+        }
+        props.updateUserInfo({ imageChanged, payload });
+        _keyboardDidHide();
+    }
+    const UndoChanges = () => {
+        _keyboardDidHide();
+        setImage(props.user.image);
+        setDailyGoal(props.user.dailygoal);
+        setStudyingTime(props.user.worktime);
+        setRestingTime(props.user.resttime);
+    }
     const logout = () => {
+        const text = 'Çıkış yapmak istediğinize emin misiniz?';
+        const edit = '\nKaydediimemiş değişiklikler kaybolacak.';
         Alert.alert(
             "Çıkış Yap",
-            "Çıkış yapmak istediğinize emin misiniz?",
+            change ? text + edit : text,
             [
                 {
                     text: "Cancel",
                     onPress: () => { console.log("Çıkış iptal") },
                     style: "cancel"
                 },
-                { text: "OK", onPress: () => { console.log("Çıkış yapılacak") } }
+                { text: "OK", onPress: () => { props.signOut(); } }
             ],
             { cancelable: false }
         );
     }
 
     return (
-        <SafeAreaView>
-            <ScrollView>
-                {/* Profile picture  */}
-                <View style={styles.photo}>
-                    <TouchableOpacity onPress={() => selectPhoto()} style={{ borderRadius: 25, backgroundColor: '#4495cb', borderWidth: 3 }}>
-                        {
-                            user.image ?
-                                <Image style={{ height: 150, width: 150, borderRadius: 25 }} source={image} />
+        <SafeAreaView style={{ flex: 1 }}>
+            <View style={{ flex: 1 }}>
+                <ScrollView>
+                    {/* Profile picture  */}
+                    <View style={styles.photo}>
+                        <TouchableOpacity onPress={() => selectPhoto()} style={{ borderRadius: 25, backgroundColor: '#4495cb', borderWidth: 3 }}>
+                            {
+                                image != "" ?
+                                    <Image style={{ height: 150, width: 150, borderRadius: 25 }} source={{ uri: image }} /*source={{ url: image }}*/ />
+                                    :
+                                    <Image style={{ height: 150, width: 150, borderRadius: 25 }} source={require('../../images/appomodoro_icon.png')} />
+                            }
+
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={removePhoto} style={{ alignSelf: 'flex-end', borderWidth: 3, borderRadius: 15, }}>
+                            <Text style={[styles.text]}> X </Text>
+                        </TouchableOpacity>
+
+                    </View>
+                    {/* Profile details  */}
+                    <View style={styles.profile}>
+
+                        <View style={styles.textContainer}>
+                            <Text style={styles.text}> Kullanıcı Adı : </Text>
+                            <Text style={styles.textDetail}>{props.user.username/*user.username*/}</Text>
+                        </View>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.text}> İsim : </Text>
+                            <Text style={styles.textDetail}>{props.user.name/*user.fullName*/}</Text>
+                        </View>
+                        <View style={[styles.textContainer]}>
+                            <Text style={styles.text}> Mail : </Text>
+                            <Text style={styles.textDetail}>{props.user.email/*user.email*/}</Text>
+                        </View>
+
+                    </View>
+
+                    {/* Profile goals  */}
+                    <View style={[styles.profile]}>
+                        <View style={styles.textContainer}>
+                            <Text style={[styles.text]}> Günlük Hedef : </Text>
+                            {editGoal ?
+                                <Input keyboardType='number-pad' autoFocus={true} onChangeText={(value) => { setDailyGoal(value); }} style={styles.textDetail} />
                                 :
-                                <Image style={{ height: 150, width: 150, borderRadius: 25 }} source={require('../../images/appomodoro_icon.png')} />
-                        }
+                                <TouchableOpacity onPress={() => { setEditGoal(true) }}>
+                                    <Text style={styles.textGoalDetail}>{/*props.user.dailygoal*/dailyGoal}</Text>
+                                </TouchableOpacity>
+                            }
+                        </View>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.text}> Çalışma Süresi : </Text>
+                            {editStudying ?
+                                <Input keyboardType='number-pad' autoFocus={true} onChangeText={(value) => { setStudyingTime(value); }} style={styles.textDetail} />
+                                :
+                                <TouchableOpacity onPress={() => { setEditStudying(true) }}>
+                                    <Text style={styles.textGoalDetail}>{/*props.user.worktime*/studyingTime}</Text>
+                                </TouchableOpacity>
+                            }
+                        </View>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.text}> Dinlenme Süresi : </Text>
+                            {editResting ?
+                                <Input keyboardType='number-pad' autoFocus={true} onChangeText={(value) => { setRestingTime(value); }} style={styles.textDetail} />
+                                :
+                                <TouchableOpacity onPress={() => { setEditResting(true) }}>
+                                    <Text style={styles.textGoalDetail}>{/*props.user.resttime*/restingTime}</Text>
+                                </TouchableOpacity>
+                            }
 
+                        </View>
+
+
+                    </View>
+
+                    <TouchableOpacity onPress={logout} style={[styles.textContainer, { alignSelf: 'center' }]}>
+                        <Text style={{ marginRight: 15, }}>Çıkış Yap</Text>
+
+                        <Image style={{ height: 30, width: 30, }} source={require('../../images/logout.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={removePhoto} style={{ alignSelf: 'flex-end', borderWidth: 3, borderRadius: 15, }}>
-                        <Text style={[styles.text]}> X </Text>
-                    </TouchableOpacity>
 
+
+                </ScrollView>
+            </View>
+            {change ?
+                <View style={{ marginBottom: 5, marginRight: 5, backgroundColor: 'transparent', flexDirection: 'row', alignSelf: 'flex-end' }}>
+                    <Button text='Geri al' onPress={UndoChanges} style={{ height: 30, width: 100, backgroundColor: 'gray', marginRight: 5 }} />
+                    <Button text='Kaydet' onPress={SaveChanges} loading={props.loading} style={{ height: 30, width: 100, }} />
                 </View>
-                {/* Profile details  */}
-                <View style={styles.profile}>
-
-                    <View style={styles.textContainer}>
-                        <Text style={styles.text}> Kullanıcı Adı : </Text>
-                        <Text style={styles.textDetail}>{user.username}</Text>
-                    </View>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.text}> İsim : </Text>
-                        <Text style={styles.textDetail}>{user.fullName}</Text>
-                    </View>
-                    <View style={[styles.textContainer]}>
-                        <Text style={styles.text}> Mail : </Text>
-                        <Text style={styles.textDetail}>{user.email}</Text>
-                    </View>
-
-                </View>
-
-                {/* Profile goals  */}
-                <View style={[styles.profile]}>
-                    <View style={styles.textContainer}>
-                        <Text style={[styles.text]}> Günlük Hedef : </Text>
-                        {editGoal ?
-                            <Input keyboardType='number-pad' autoFocus={true} onChangeText={(value) => { setDailyGoal(value); }} style={styles.textDetail} />
-                            :
-                            <TouchableOpacity onPress={() => { setEditGoal(true) }}>
-                                <Text style={styles.textGoalDetail}>{user.dailyGoal}</Text>
-                            </TouchableOpacity>
-                        }
-                    </View>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.text}> Çalışma Süresi : </Text>
-                        {editStudying ?
-                            <Input keyboardType='number-pad' autoFocus={true} onChangeText={(value) => { setStudyingTime(value); }} style={styles.textDetail} />
-                            :
-                            <TouchableOpacity onPress={() => { setEditStudying(true) }}>
-                                <Text style={styles.textGoalDetail}>{user.studyingTime}</Text>
-                            </TouchableOpacity>
-                        }
-                    </View>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.text}> Dinlenme Süresi : </Text>
-                        {editResting ?
-                            <Input keyboardType='number-pad' autoFocus={true} onChangeText={(value) => { setRestingTime(value); }} style={styles.textDetail} />
-                            :
-                            <TouchableOpacity onPress={() => { setEditResting(true) }}>
-                                <Text style={styles.textGoalDetail}>{user.restingTime}</Text>
-                            </TouchableOpacity>
-                        }
-
-                    </View>
-
-                </View>
-
-                <TouchableOpacity onPress={logout} style={[styles.textContainer, { alignSelf: 'center' }]}>
-                    <Text style={{ marginRight: 15, }}>Çıkış Yap</Text>
-
-                    <Image style={{ height: 30, width: 30, }} source={require('../../images/logout.png')} />
-                </TouchableOpacity>
-
-            </ScrollView>
+                :
+                null
+            }
         </SafeAreaView>
     );
 }
@@ -222,9 +262,16 @@ const styles = {
         fontSize: 25,
         fontWeight: 'bold',
         padding: 5,
+        paddingLeft: 8,
         borderWidth: 2,
         borderRadius: 15,
     }
 }
 
-export default Profile;
+const mapStateToProps = ({ authResponse /*, profileResponse*/ }) => {
+    //const { loading, data } = profileResponse;
+    const { loading, user } = authResponse;
+    return { loading, user /*data*/ };
+};
+
+export default connect(mapStateToProps, { signOut, updateUserInfo /*getUserInfo*/ })(Profile);
