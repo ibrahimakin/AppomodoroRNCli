@@ -1,3 +1,4 @@
+
 export const LOGIN_START = 'login_start';
 export const LOGIN_SUCCESS = 'login_success';
 export const LOGIN_FAILED = 'login_failed';
@@ -19,3 +20,16 @@ export const GET_USERINFO_FAILED = 'get_tweet_failed';
 export const UPDATE_USERINFO_START = 'update_tweet_start';
 export const UPDATE_USERINFO_SUCCESS = 'update_tweet_success';
 export const UPDATE_USERINFO_FAILED = 'update_tweet_failed';
+
+export const GET_DAILY_POMODORO_FOR_ONCE_START='get_daily_pomodoro_for_once_start'
+export const GET_DAILY_POMODORO_FOR_ONCE_SUCCESS='get_daily_pomodoro_for_once_success'
+export const GET_DAILY_POMODORO_FOR_ONCE_FAILED='get_daily_pomodoro_for_once_failed'
+
+export const GET_DAILY_POMODORO_START='get_daily_pomodoro_start'
+export const GET_DAILY_POMODORO_SUCCESS='get_daily_pomodoro_success'
+export const GET_DAILY_POMODORO_FAILED='get_daily_pomodoro_failed'
+
+export const ADD_DAILY_POMODORO_START='get_daily_pomodoro_start'
+export const ADD_DAILY_POMODORO_SUCCESS='get_daily_pomodoro_success'
+export const ADD_DAILY_POMODORO_FAILED='get_daily_pomodoro_failed'
+

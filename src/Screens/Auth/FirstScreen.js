@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, Image, Dimensions } from 'react-native';
+
 import { Input, Button } from '../../Components'
 
 const { width, height } = Dimensions.get('window');
@@ -21,23 +22,24 @@ const FirstScreen = (props) => {
                 <Text style={{fontWeight: 'bold', fontSize: 30}}>Appomodoro</Text>
             </View>
 
-            <View style={{ flex: 2, width: '80%', alignItems: 'center', justifyContent: 'center'  }}>
+            <View style={{ flex: 2, width: '80%', alignItems: 'center', justifyContent: 'space-around'  }}>
                 <Button
                     text={'Login'}
                     onPress={() => {
                         props.navigation.navigate('Login')
                     }}
                 />
-            </View>
-      
-            <View style={{ flex: 2, width: '80%', alignItems: 'center', justifyContent: 'flex-start'  }}>
-                <Button
+                 <Button
                     text={'Register'}
                     onPress={() => {
                         props.navigation.navigate('Register')
                     }}
                 />
             </View>
+      
+            {/* <View style={{ flex: 2, width: '80%', alignItems: 'center', justifyContent: 'flex-start'  }}>
+               
+            </View> */}
 
         </SafeAreaView>
     )
