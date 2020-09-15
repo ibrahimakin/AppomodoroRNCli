@@ -23,7 +23,7 @@ export const getDailyPomodoro = (params) => {
             .doc(params.userid)
             .collection(params.date)
             .onSnapshot(dailyPomodoro => {
-                console.log('dailyPomodoro', dailyPomodoro)
+                // console.log('dailyPomodoro', dailyPomodoro)
                 dispatch({ type: GET_DAILY_POMODORO_SUCCESS, payload: dailyPomodoro.docs[0] ? dailyPomodoro._docs[0]._data : null });
             })
     }
@@ -36,7 +36,7 @@ export const getDailyPomodoroForOnce = () => {
             .doc('UWi5eo1OQuXhamyb8eHN6o702353')
             .collection('05092020')
             .get().then((dailyPomodoro) => {
-                console.log('Gelen Data: ', dailyPomodoro);
+                // console.log('Gelen Data: ', dailyPomodoro);
                 dispatch({ type: GET_DAILY_POMODORO_FOR_ONCE_SUCCESS, payload: dailyPomodoro._docs[0]._data })
             }).catch((err) => {
                 console.log('Read Data error: ', err);
@@ -48,7 +48,7 @@ export const getDailyPomodoroForOnce = () => {
 export const addDailyPomodoro = (params) => {
     return (dispatch) => {
         dispatch({ type: ADD_DAILY_POMODORO_START });
-        console.log('paraaam', params)
+        // console.log('paraaam', params)
         firestore()
             .collection('DailyPomodoro')
             .doc(params.userid)
@@ -67,3 +67,26 @@ export const addDailyPomodoro = (params) => {
     }
 }
 
+
+// export const addDailyPomodoroTest = (params) => {
+//     return (dispatch) => {
+//         dispatch({ type: ADD_DAILY_POMODORO_START });
+//         // console.log('paraaam', params)
+//         firestore()
+//             .collection('DailyPomodoroTest')
+//             .doc(params.userid)
+//             .collection('TotalWork')
+//             .set(
+//                 { TotalWork: [{ who: "third@test.com", when: new Date() }] },
+//                 { merge: true }
+//               )
+//             .then(() => {
+//                 console.log('Daily work updated');
+//                 dispatch({ type: ADD_DAILY_POMODORO_SUCCESS })
+
+//             }).catch((err) => {
+//                 console.log('Read Data error: ', err);
+//                 dispatch({ type: ADD_DAILY_POMODORO_FAILED })
+//             });
+//     }
+// }

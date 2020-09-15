@@ -21,15 +21,22 @@ export const UPDATE_USERINFO_START = 'update_tweet_start';
 export const UPDATE_USERINFO_SUCCESS = 'update_tweet_success';
 export const UPDATE_USERINFO_FAILED = 'update_tweet_failed';
 
-export const GET_DAILY_POMODORO_FOR_ONCE_START='get_daily_pomodoro_for_once_start'
-export const GET_DAILY_POMODORO_FOR_ONCE_SUCCESS='get_daily_pomodoro_for_once_success'
-export const GET_DAILY_POMODORO_FOR_ONCE_FAILED='get_daily_pomodoro_for_once_failed'
+export const GET_DAILY_POMODORO_FOR_ONCE_START = 'get_daily_pomodoro_for_once_start'
+export const GET_DAILY_POMODORO_FOR_ONCE_SUCCESS = 'get_daily_pomodoro_for_once_success'
+export const GET_DAILY_POMODORO_FOR_ONCE_FAILED = 'get_daily_pomodoro_for_once_failed'
 
-export const GET_DAILY_POMODORO_START='get_daily_pomodoro_start'
-export const GET_DAILY_POMODORO_SUCCESS='get_daily_pomodoro_success'
-export const GET_DAILY_POMODORO_FAILED='get_daily_pomodoro_failed'
+export const GET_DAILY_POMODORO_START = 'get_daily_pomodoro_start'
+export const GET_DAILY_POMODORO_SUCCESS = 'get_daily_pomodoro_success'
+export const GET_DAILY_POMODORO_FAILED = 'get_daily_pomodoro_failed'
 
-export const ADD_DAILY_POMODORO_START='get_daily_pomodoro_start'
-export const ADD_DAILY_POMODORO_SUCCESS='get_daily_pomodoro_success'
-export const ADD_DAILY_POMODORO_FAILED='get_daily_pomodoro_failed'
+export const ADD_DAILY_POMODORO_START = 'get_daily_pomodoro_start'
+export const ADD_DAILY_POMODORO_SUCCESS = 'get_daily_pomodoro_success'
+export const ADD_DAILY_POMODORO_FAILED = 'get_daily_pomodoro_failed'
 
+export const GET_POMODORO_STATS_START = 'get_pomodoro_stats_start'
+export const GET_POMODORO_STATS_SUCCESS = 'get_pomodoro_stats_success'
+export const GET_POMODORO_STATS_FAILED = 'get_pomodoro_stats_failed'
+
+export const GET_ACHIEVEMENT_LIST_START = 'get_achievement_list_start'
+export const GET_ACHIEVEMENT_LIST_SUCCESS = 'get_achievement_list_success'
+export const GET_ACHIEVEMENT_LIST_FAILED = 'get_achievement_list_failed'
