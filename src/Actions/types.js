@@ -9,17 +9,17 @@ export const REGISTER_FAILED = 'register_failed';
 
 export const SIGNOUT_SUCCESS = 'signout_success';
 
-export const ADD_USERINFO_START = 'add_tweet_start';
-export const ADD_USERINFO_SUCCESS = 'add_tweet_success';
-export const ADD_USERINFO_FAILED = 'add_tweet_failed';
+export const ADD_USERINFO_START = 'add_userinfo_start';
+export const ADD_USERINFO_SUCCESS = 'add_userinfo_success';
+export const ADD_USERINFO_FAILED = 'add_userinfo_failed';
 
-export const GET_USERINFO_START = 'get_tweet_start';
-export const GET_USERINFO_SUCCESS = 'get_tweet_success';
-export const GET_USERINFO_FAILED = 'get_tweet_failed';
+export const GET_USERINFO_START = 'get_userinfo_start';
+export const GET_USERINFO_SUCCESS = 'get_userinfo_success';
+export const GET_USERINFO_FAILED = 'get_userinfo_failed';
 
-export const UPDATE_USERINFO_START = 'update_tweet_start';
-export const UPDATE_USERINFO_SUCCESS = 'update_tweet_success';
-export const UPDATE_USERINFO_FAILED = 'update_tweet_failed';
+export const UPDATE_USERINFO_START = 'update_userinfo_start';
+export const UPDATE_USERINFO_SUCCESS = 'update_userinfo_success';
+export const UPDATE_USERINFO_FAILED = 'update_userinfo_failed';
 
 export const GET_DAILY_POMODORO_FOR_ONCE_START = 'get_daily_pomodoro_for_once_start'
 export const GET_DAILY_POMODORO_FOR_ONCE_SUCCESS = 'get_daily_pomodoro_for_once_success'
@@ -40,3 +40,7 @@ export const GET_POMODORO_STATS_FAILED = 'get_pomodoro_stats_failed'
 export const GET_ACHIEVEMENT_LIST_START = 'get_achievement_list_start'
 export const GET_ACHIEVEMENT_LIST_SUCCESS = 'get_achievement_list_success'
 export const GET_ACHIEVEMENT_LIST_FAILED = 'get_achievement_list_failed'
+
+export const SET_SESSION_START = 'set_session_start';
+export const SET_SESSION_SUCCESS = 'set_session_success';
+export const SET_SESSION_FAILED = 'set_session_failed';

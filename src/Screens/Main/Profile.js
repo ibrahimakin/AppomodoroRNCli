@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Alert, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, Keyboard } from 'react-native';
 import { Input, Button } from '../../Components';
 import ImagePicker from 'react-native-image-picker';
-//import { set } from 'react-native-reanimated';
 import { connect } from 'react-redux';
 import { signOut, updateUserInfo, /*getUserInfo*/ } from '../../Actions';
 
@@ -90,11 +89,11 @@ const Profile = (props) => {
             "Fotoğrafı kaldırmak istediğinize emin misiniz?",
             [
                 {
-                    text: "Cancel",
+                    text: "İptal",
                     onPress: () => { },
                     style: "cancel"
                 },
-                { text: "OK", onPress: () => { setImage(""); } }
+                { text: "Tamam", onPress: () => { setImage(""); } }
             ],
             { cancelable: false }
         );
@@ -110,6 +109,8 @@ const Profile = (props) => {
             dailygoal: dailyGoal,
             worktime: studyingTime,
             resttime: restingTime,
+            dailysession: props.user.dailysession,
+            lastsessiondate: new Date().toLocaleDateString()
         }
         props.updateUserInfo({ imageChanged, payload });
         _keyboardDidHide();
@@ -123,17 +124,17 @@ const Profile = (props) => {
     }
     const logout = () => {
         const text = 'Çıkış yapmak istediğinize emin misiniz?';
-        const edit = '\nKaydediimemiş değişiklikler kaybolacak.';
+        const edit = '\nKaydedilmemiş değişiklikler kaybolacak.';
         Alert.alert(
             "Çıkış Yap",
             change ? text + edit : text,
             [
                 {
-                    text: "Cancel",
+                    text: "İptal",
                     onPress: () => { console.log("Çıkış iptal") },
                     style: "cancel"
                 },
-                { text: "OK", onPress: () => { props.signOut(); } }
+                { text: "Tamam", onPress: () => { props.signOut(); } }
             ],
             { cancelable: false }
         );

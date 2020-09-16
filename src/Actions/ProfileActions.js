@@ -1,4 +1,10 @@
-import { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, GET_USERINFO_START, GET_USERINFO_SUCCESS, GET_USERINFO_FAILED, UPDATE_USERINFO_START, UPDATE_USERINFO_SUCCESS, UPDATE_USERINFO_FAILED } from './types';
+import {
+    LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED,
+    GET_USERINFO_START, GET_USERINFO_SUCCESS, GET_USERINFO_FAILED,
+    REGISTER_START, REGISTER_SUCCESS, REGISTER_FAILED,
+    UPDATE_USERINFO_START, UPDATE_USERINFO_SUCCESS, UPDATE_USERINFO_FAILED,
+    SET_SESSION_START, SET_SESSION_SUCCESS, SET_SESSION_FAILED
+} from './types';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { Alert } from 'react-native';
@@ -87,10 +93,39 @@ export const updateUserInfo = (params) => {
 
                     dispatch({ type: LOGIN_SUCCESS, payload });
 
-                }).catch(() => {
-                    //console.log('USER INFO not updated');
+                }).catch((err) => {
+                    //console.log('USER INFO not updated', err);
                     dispatch({ type: LOGIN_FAILED });
                 });
         }
+    }
+}
+
+export const updateDailySession = (params) => {
+    return (dispatch) => {
+
+        dispatch({ type: LOGIN_START });
+
+        const uid = params.payload.uid;
+        const payload = params.payload;
+
+
+        firestore()
+            .collection('UserInfo')
+            .doc(uid)
+            .update({
+                dailysession: payload.dailysession,
+                lastsessiondate: payload.lastsessiondate
+            })
+            .then(() => {
+                //console.log('User updated!');
+
+                dispatch({ type: LOGIN_SUCCESS, payload });
+
+            }).catch(() => {
+                //console.log('USER INFO not updated');
+                dispatch({ type: LOGIN_FAILED });
+            });
+
     }
 }

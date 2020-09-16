@@ -7,13 +7,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import MainPage from '../Screens/Main/MainPage'
+import MainAlternative from '../Screens/Main/MainAlternative';
 import Profile from '../Screens/Main/Profile'
 import Stats from '../Screens/Main/Stats'
 
 import FirstScreen from '../Screens/Auth/FirstScreen'
 import Login from '../Screens/Auth/Login'
 import Register from '../Screens/Auth/Register'
-
+import { colors } from '../style';
 const AuthStack = createStackNavigator();
 
 const AuthStackScreen = () => {
@@ -70,7 +71,7 @@ const TabStackScreen = () => {
                     }
 
                     // You can return any component that you like here!
-                    return <Icon name={iconName} type='FontAwesome' size={size} style={{ color: focused ? '#4495cb' : color }} />;
+                    return <Icon name={iconName} type='FontAwesome' size={size} style={{ color: focused ? colors.main : color }} />;
                 },
             })}
             tabBarOptions={{
@@ -80,7 +81,7 @@ const TabStackScreen = () => {
             }}
         >
             <TabStack.Screen name="Statistics" component={Stats} />
-            <TabStack.Screen name="Home" component={MainPage} />
+            <TabStack.Screen name="Home" component={MainAlternative} />
             <TabStack.Screen name="Profile" component={Profile} />
         </TabStack.Navigator>);
 };
