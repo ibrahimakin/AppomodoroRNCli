@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-
+import { colors } from '../style';
 const Button = (props) => (
   <TouchableOpacity
     activeOpacity={0.8}
     onPress={props.onPress}
     style={[{
-      backgroundColor: '#4495cb',
+      backgroundColor: colors.main,
       width: '100%',
       height: '25%',
       alignItems: 'center',

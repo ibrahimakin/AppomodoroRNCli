@@ -34,6 +34,8 @@ const Register = (props) => {
             dailygoal: 8,
             worktime: 25,
             resttime: 5,
+            dailysession: 0,
+            lastsessiondate: new Date().toLocaleDateString()
         };
         props.register(params);
     }
@@ -43,7 +45,7 @@ const Register = (props) => {
             <ScrollView style={{ flex: 0.8, }}>
 
                 <View style={{ alignItems: 'center', }}>
-                    <Text style={{ width: '85%', marginBottom: 20, marginTop: 20, fontSize: 28, fontWeight: 'bold' }}>Register on Appomodoro</Text>
+                    <Text style={{ width: '85%', marginBottom: 20, marginTop: 20, fontSize: 28, fontWeight: 'bold' }}>Appomodoro'ya Kayıt Ol</Text>
                     <Input placeholder='Name' value={name} onChangeText={(value) => setName(value)} style={{ marginBottom: 10, width: '85%', }} />
                     <Input placeholder='Username' value={username} onChangeText={(value) => setUsername(value)} style={{ marginBottom: 10, width: '85%', }} />
                     <Input placeholder='e-mail' value={email} onChangeText={(value) => setEmail(value)} style={{ marginBottom: 10, width: '85%', }} />
@@ -55,9 +57,9 @@ const Register = (props) => {
 
             <View style={{ flex: 0.1, alignItems: 'center', justifyContent: 'space-between', padding: 10, flexDirection: 'row', borderTopWidth: 1, borderTopColor: 'gray' }}>
                 <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
-                    <Text style={styles.blueText}>  Login</Text>
+                    <Text style={styles.blueText}>  Zaten üye misin?</Text>
                 </TouchableOpacity>
-                <Button text='Register' style={{ padding: 10, width: 150, height: 40 }} onPress={RegisterClick} loading={props.loading} />
+                <Button text='Kayıt Ol' style={{ padding: 10, width: 150, height: 40 }} onPress={RegisterClick} loading={props.loading} />
             </View>
         </SafeAreaView>
     );

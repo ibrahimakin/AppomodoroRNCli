@@ -36,7 +36,7 @@ const Login = (props) => {
             <ScrollView style={{ flex: 0.8, }}>
 
                 <View style={{ alignItems: 'center', }}>
-                    <Text style={{ width: '85%', marginBottom: 20, marginTop: 20, fontSize: 28, fontWeight: 'bold' }}>Login on Appomodoro</Text>
+                    <Text style={{ width: '85%', marginBottom: 20, marginTop: 20, fontSize: 28, fontWeight: 'bold' }}>Appomodoro'ya Giriş Yap</Text>
                     <Input placeholder='e-mail' value={email} onChangeText={(value) => setEmail(value)} style={{ marginBottom: 10, width: '85%', }} />
                     <Input placeholder='password' value={password} onChangeText={(value) => setPassword(value)} secureTextEntry style={{ marginBottom: 10, width: '85%', }} />
                 </View>
@@ -45,10 +45,10 @@ const Login = (props) => {
 
 
             <View style={{ flex: 0.1, alignItems: 'center', justifyContent: 'space-between', padding: 10, flexDirection: 'row', borderTopWidth: 1, borderTopColor: 'gray' }}>
-                <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
-                    <Text style={styles.blueText}>  Did you forget your password?</Text>
+                <TouchableOpacity onPress={() => props.navigation.navigate('Register')}>
+                    <Text style={styles.blueText} >  Yeni hesap oluştur!</Text>
                 </TouchableOpacity>
-                <Button text='Login' style={{ padding: 10, width: 150, height: 40 }} onPress={LoginClick} loading={props.loading} />
+                <Button text='Giriş Yap' style={{ padding: 10, width: 150, height: 40 }} onPress={LoginClick} loading={props.loading} />
             </View>
         </SafeAreaView>
     );
