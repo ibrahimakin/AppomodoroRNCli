@@ -68,25 +68,23 @@ export const addDailyPomodoro = (params) => {
 }
 
 
-// export const addDailyPomodoroTest = (params) => {
-//     return (dispatch) => {
-//         dispatch({ type: ADD_DAILY_POMODORO_START });
-//         // console.log('paraaam', params)
-//         firestore()
-//             .collection('DailyPomodoroTest')
-//             .doc(params.userid)
-//             .collection('TotalWork')
-//             .set(
-//                 { TotalWork: [{ who: "third@test.com", when: new Date() }] },
-//                 { merge: true }
-//               )
-//             .then(() => {
-//                 console.log('Daily work updated');
-//                 dispatch({ type: ADD_DAILY_POMODORO_SUCCESS })
+export const addDailyPomodoroTest = (params) => {
+    return (dispatch) => {
+        dispatch({ type: ADD_DAILY_POMODORO_START });
+        // console.log('paraaam', params)
+        firestore()
+            .collection('DailyPomodoroTest')
+            .doc(params.userid)
+            .update({
+                DailyWorkArray: firestore.FieldValue.arrayUnion(params.date)
+            })
+            .then(() => {
+                console.log('Daily work updated');
+                dispatch({ type: ADD_DAILY_POMODORO_SUCCESS })
 
-//             }).catch((err) => {
-//                 console.log('Read Data error: ', err);
-//                 dispatch({ type: ADD_DAILY_POMODORO_FAILED })
-//             });
-//     }
-// }
+            }).catch((err) => {
+                console.log('Read Data error: ', err);
+                dispatch({ type: ADD_DAILY_POMODORO_FAILED })
+            });
+    }
+}

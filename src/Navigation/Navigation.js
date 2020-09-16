@@ -81,7 +81,7 @@ const TabStackScreen = () => {
             }}
         >
             <TabStack.Screen name="Statistics" component={Stats} />
-            <TabStack.Screen name="Home" component={MainAlternative} />
+            <TabStack.Screen name="Home" component={MainPage} />
             <TabStack.Screen name="Profile" component={Profile} />
         </TabStack.Navigator>);
 };

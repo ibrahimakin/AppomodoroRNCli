@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, Vibration, Dimensions,
 
 import { connect } from 'react-redux';
 
-import { getDailyPomodoro, getDailyPomodoroForOnce, addDailyPomodoro } from '../../Actions'
+import { getDailyPomodoro, getDailyPomodoroForOnce, addDailyPomodoro, addDailyPomodoroTest } from '../../Actions'
 
 
 const { width, height } = Dimensions.get('window');
@@ -78,9 +78,11 @@ const MainPage = (props) => {
           let params = {
             daily: dailyWork,
             userid: props.user.uid,
-            date: new Date().toLocaleDateString()
+            // date: new Date().toLocaleDateString()
+            date: new Date()
           }
-          props.addDailyPomodoro(params)
+          props.addDailyPomodoroTest(params)
+          // props.addDailyPomodoro(params)
         }
       }, 1000);
     }
@@ -213,5 +215,5 @@ const mapStateToProps = ({ mainPageResponse, authResponse }) => {
   return { loadingMainPage, dailyPomodoro, user: authResponse.user };
 };
 
-export default connect(mapStateToProps, { getDailyPomodoro, getDailyPomodoroForOnce, addDailyPomodoro })(MainPage);
+export default connect(mapStateToProps, { getDailyPomodoro, getDailyPomodoroForOnce, addDailyPomodoro, addDailyPomodoroTest })(MainPage);
 
