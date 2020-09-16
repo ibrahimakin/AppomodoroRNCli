@@ -58,13 +58,19 @@ export const register = (params) => {
                     dailygoal: params.dailygoal,
                     worktime: params.worktime,
                     resttime: params.resttime,
+                    dailysession: params.dailysession,
+                    lastsessiondate: params.lastsessiondate,
                 }
                 firestore()
                     .collection('UserInfo')
                     .doc(uid)
                     .set(setData)
                     .then(() => {
-                        dispatch({ type: REGISTER_SUCCESS, payload: setData });
+                        const userParams = {
+                            ...setData,
+                            uid
+                        }
+                        dispatch({ type: REGISTER_SUCCESS, payload: userParams });
 
                         // console.log('User added!');
                         // RootNavigation.pop();
