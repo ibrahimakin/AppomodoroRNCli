@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, Dimensions, SafeAreaView, FlatList } from 'react-native';
-
+import { Text, View, StyleSheet, Dimensions, SafeAreaView, FlatList, Image } from 'react-native';
 import {
     BarChart
 } from "react-native-chart-kit";
 import { ScrollView } from 'react-native-gesture-handler';
-
 import Carousel from 'react-native-snap-carousel';
 
+
+import { connect } from 'react-redux';
+import { getDailyPomodoroForStats, getAchievementList } from '../../Actions'
+
+
+
 const { width, height } = Dimensions.get('window');
+
+
 
 
 
@@ -70,36 +76,29 @@ const carouselItems = [
 
 const renderListItem = ({ item }) => (
     <View style={styles.item}>
-        <Text style={styles.title}>{item.title}</Text>
+        <Image style={styles.achievementImage} source={require('../../images/unlock.png')} />
+        <Text style={styles.title}>{item.achievementName}</Text>
     </View>
 );
 
 
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97fg3',
-        title: 'Fourth Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29a72',
-        title: 'Fifth Item',
-    },
-];
+
 
 const Stats = (props) => {
 
+    const [achievements, setAchievements] = useState([])
+
+    useEffect(() => {
+        props.getAchievementList();
+
+        let params = {
+            userid: props.user.uid,
+        }
+        props.getDailyPomodoroForStats(params);
+
+    }, []);
+
+    console.log('props', props)
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={{ flex: 3 }}>
@@ -116,7 +115,7 @@ const Stats = (props) => {
                 <ScrollView>
                     <SafeAreaView style={styles.container}>
                         <FlatList
-                            data={DATA}
+                            data={props.achievementList ? props.achievementList : null}
                             renderItem={renderListItem}
                             keyExtractor={item => item.id}
                         />
@@ -136,7 +135,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
-
+    achievementImage: {
+        height: width * 0.1,
+        width: width * 0.1
+    },
 
     container: {
         flex: 1,
@@ -147,10 +149,13 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
         width: width * 0.9,
         borderWidth: 1,
-        borderColor: 'black'
+        borderColor: 'black',
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     title: {
-        fontSize: 32,
+        fontSize: 20,
+        marginLeft: width * 0.1
     },
 
     achievementsText: {
@@ -162,4 +167,13 @@ const styles = StyleSheet.create({
 
 });
 
-export default Stats;
+// export default Stats;
+
+
+const mapStateToProps = ({ statsResponse, authResponse }) => {
+    const { loadingStats, dailyPomodoroForStats, achievementList } = statsResponse;
+    return { loadingStats, dailyPomodoroForStats, achievementList, user: authResponse.user };
+};
+
+export default connect(mapStateToProps, { getDailyPomodoroForStats, getAchievementList })(Stats);
+
