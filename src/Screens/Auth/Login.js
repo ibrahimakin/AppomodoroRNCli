@@ -37,8 +37,8 @@ const Login = (props) => {
 
                 <View style={{ alignItems: 'center', }}>
                     <Text style={{ width: '85%', marginBottom: 20, marginTop: 20, fontSize: 28, fontWeight: 'bold' }}>Appomodoro'ya Giriş Yap</Text>
-                    <Input placeholder='e-mail' value={email} onChangeText={(value) => setEmail(value)} style={{ marginBottom: 10, width: '85%', }} />
-                    <Input placeholder='password' value={password} onChangeText={(value) => setPassword(value)} secureTextEntry style={{ marginBottom: 10, width: '85%', }} />
+                    <Input placeholder='e-posta' value={email} onChangeText={(value) => setEmail(value)} style={{ marginBottom: 10, width: '85%', }} />
+                    <Input placeholder='şifre' value={password} onChangeText={(value) => setPassword(value)} secureTextEntry style={{ marginBottom: 10, width: '85%', }} />
                 </View>
             </ScrollView>
 
