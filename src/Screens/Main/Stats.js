@@ -8,7 +8,7 @@ import Carousel from 'react-native-snap-carousel';
 
 
 import { connect } from 'react-redux';
-import { getDailyPomodoroForStats, getAchievementList, getDailyPomodoroForStatsTest } from '../../Actions'
+import { getDailyPomodoroForStats, getAchievementList, getDailyPomodoroForStatsTest, getDailyPomodoroForGraphic } from '../../Actions'
 
 
 
@@ -18,14 +18,6 @@ const { width, height } = Dimensions.get('window');
 const Stats = (props) => {
 
 
-    const data = {
-        labels: ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"],
-        datasets: [
-            {
-                data: [8, 6, 3, 9, 10, 6, 8],
-            }
-        ]
-    };
 
     const _renderItem = () => {
         return (
@@ -34,6 +26,7 @@ const Stats = (props) => {
                     data={data}
                     width={width}
                     height={height * 0.45}
+                    showValuesOnTopOfBars
                     chartConfig={{
                         strokeWidth: 1,
                         decimalPlaces: 0,
@@ -43,6 +36,7 @@ const Stats = (props) => {
                         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                         labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                         style: {
+                            paddingRight: 100
                         },
                         propsForDots: {
                             r: "6",
@@ -81,11 +75,42 @@ const Stats = (props) => {
         </View>
     );
     const [achievements, setAchievements] = useState([])
-    const [totalWorkCount, setTotalWorkCount] = useState()
+    const [totalWorkCount, setTotalWorkCount] = useState();
+    const [graphDays, setGraphDays] = useState([]);
+    const [graphDatas, setGraphDatas] = useState([]);
+
 
     useEffect(() => {
         props.getAchievementList();
     }, []);
+
+    useEffect(() => {
+        let params = {
+            userid: props.user.uid,
+        }
+        props.getDailyPomodoroForGraphic(params);
+
+        let graphDayArray = [];
+        for (let index = 0; index < 7; index++) {
+            var date = new Date();
+            date.setDate(date.getDate() - index);
+            graphDayArray.push(date.toLocaleDateString())
+        }
+
+        let graphicDataArray = [];
+
+        graphDayArray.forEach(element => {
+            let count = 0;
+            for (let index = 0; index < props.dailyPomodoroForGraph?.length; index++) {
+                if (props.dailyPomodoroForGraph[index] == element)
+                    count++;
+            }
+            graphicDataArray.push(count)
+        });
+
+        setGraphDatas(graphicDataArray.reverse());
+        setGraphDays(graphDayArray.reverse())
+    }, [props.dailyPomodoroForGraph]);
 
     useEffect(() => {
         let params = {
@@ -96,7 +121,19 @@ const Stats = (props) => {
     }, [props.dailyPomodoroForStats]);
 
 
-    console.log('props', props)
+    const data = {
+        // labels: ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"],
+        labels: graphDays,
+        datasets: [
+            {
+                // data: [8, 6, 3, 9, 10, 6, 8],
+                data: graphDatas ? graphDatas : [0, 0, 0, 0, 0, 0, 0],
+            }
+        ]
+    };
+    // console.log('props', props)
+    console.log('graphDays', graphDays)
+    console.log('graphicDataArray', graphDatas)
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={{ flex: 3 }}>
@@ -166,9 +203,15 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ statsResponse, authResponse }) => {
-    const { loadingStats, dailyPomodoroForStats, achievementList } = statsResponse;
-    return { loadingStats, dailyPomodoroForStats, achievementList, user: authResponse.user };
+    const { loadingStats, dailyPomodoroForStats, dailyPomodoroForGraph, achievementList } = statsResponse;
+    return { loadingStats, dailyPomodoroForStats, dailyPomodoroForGraph, achievementList, user: authResponse.user };
 };
 
-export default connect(mapStateToProps, { getDailyPomodoroForStats, getAchievementList, getDailyPomodoroForStatsTest })(Stats);
+export default connect(mapStateToProps,
+    {
+        getDailyPomodoroForStats,
+        getAchievementList,
+        getDailyPomodoroForStatsTest,
+        getDailyPomodoroForGraphic
+    })(Stats);
 

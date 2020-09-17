@@ -44,3 +44,7 @@ export const GET_ACHIEVEMENT_LIST_FAILED = 'get_achievement_list_failed'
 export const SET_SESSION_START = 'set_session_start';
 export const SET_SESSION_SUCCESS = 'set_session_success';
 export const SET_SESSION_FAILED = 'set_session_failed';
+
+export const GET_POMODORO_STATS_GRAPH_START = 'get_pomodoro_stats_graph_start'
+export const GET_POMODORO_STATS_GRAPH_SUCCESS = 'get_pomodoro_stats_graph_success'
+export const GET_POMODORO_STATS_GRAPH_FAILED = 'get_pomodoro_stats_graph_failed'
