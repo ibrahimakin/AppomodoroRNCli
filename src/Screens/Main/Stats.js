@@ -8,95 +8,93 @@ import Carousel from 'react-native-snap-carousel';
 
 
 import { connect } from 'react-redux';
-import { getDailyPomodoroForStats, getAchievementList } from '../../Actions'
+import { getDailyPomodoroForStats, getAchievementList, getDailyPomodoroForStatsTest } from '../../Actions'
 
 
 
 const { width, height } = Dimensions.get('window');
 
 
-
-
-
-const data = {
-    labels: ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"],
-    datasets: [
-        {
-            data: [8, 6, 3, 9, 10, 6, 8],
-        }
-    ]
-};
-
-
-
-
-
-const _renderItem = () => {
-    return (
-        <View style={styles.carouselItemView}>
-            <BarChart
-                data={data}
-                width={width}
-                height={height * 0.45}
-                chartConfig={{
-                    strokeWidth: 1,
-                    decimalPlaces: 0,
-                    backgroundColor: "#FE7C7C",
-                    backgroundGradientFrom: "#FE7C7C",
-                    backgroundGradientTo: "#FE7C7C",
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    style: {
-                    },
-                    propsForDots: {
-                        r: "6",
-                        strokeWidth: "2",
-                        stroke: "#ffa726"
-                    }
-                }}
-                style={{
-                    // marginVertical: 8,
-                    // borderRadius: 16
-                }}
-                verticalLabelRotation={15}
-            />
-        </View>
-    );
-}
-const carouselItems = [
-    {
-        id: 1,
-    },
-    {
-        id: 2,
-    },
-]
-
-
-
-const renderListItem = ({ item }) => (
-    <View style={styles.item}>
-        <Image style={styles.achievementImage} source={require('../../images/unlock.png')} />
-        <Text style={styles.title}>{item.achievementName}</Text>
-    </View>
-);
-
-
-
-
 const Stats = (props) => {
 
+
+    const data = {
+        labels: ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"],
+        datasets: [
+            {
+                data: [8, 6, 3, 9, 10, 6, 8],
+            }
+        ]
+    };
+
+    const _renderItem = () => {
+        return (
+            <View style={styles.carouselItemView}>
+                <BarChart
+                    data={data}
+                    width={width}
+                    height={height * 0.45}
+                    chartConfig={{
+                        strokeWidth: 1,
+                        decimalPlaces: 0,
+                        backgroundColor: "#FE7C7C",
+                        backgroundGradientFrom: "#FE7C7C",
+                        backgroundGradientTo: "#FE7C7C",
+                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                        style: {
+                        },
+                        propsForDots: {
+                            r: "6",
+                            strokeWidth: "2",
+                            stroke: "#ffa726"
+                        }
+                    }}
+                    style={{
+                        // marginVertical: 8,
+                        // borderRadius: 16
+                    }}
+                    verticalLabelRotation={15}
+                />
+            </View>
+        );
+    }
+    const carouselItems = [
+        {
+            id: 1,
+        },
+        {
+            id: 2,
+        },
+    ]
+
+
+
+
+
+    const renderListItem = ({ item }) => (
+        <View style={styles.item}>
+            {totalWorkCount >= item.dayCount ?
+                <Image style={styles.achievementImage} source={require('../../images/tick.png')} /> :
+                <Image style={styles.achievementImage} source={require('../../images/unlock.png')} />}
+            <Text style={styles.title}>{item.achievementName}</Text>
+        </View>
+    );
     const [achievements, setAchievements] = useState([])
+    const [totalWorkCount, setTotalWorkCount] = useState()
 
     useEffect(() => {
         props.getAchievementList();
+    }, []);
 
+    useEffect(() => {
         let params = {
             userid: props.user.uid,
         }
-        props.getDailyPomodoroForStats(params);
+        props.getDailyPomodoroForStatsTest(params);
+        setTotalWorkCount(props.dailyPomodoroForStats ? props.dailyPomodoroForStats.length : 0)
+    }, [props.dailyPomodoroForStats]);
 
-    }, []);
 
     console.log('props', props)
     return (
@@ -167,13 +165,10 @@ const styles = StyleSheet.create({
 
 });
 
-// export default Stats;
-
-
 const mapStateToProps = ({ statsResponse, authResponse }) => {
     const { loadingStats, dailyPomodoroForStats, achievementList } = statsResponse;
     return { loadingStats, dailyPomodoroForStats, achievementList, user: authResponse.user };
 };
 
-export default connect(mapStateToProps, { getDailyPomodoroForStats, getAchievementList })(Stats);
+export default connect(mapStateToProps, { getDailyPomodoroForStats, getAchievementList, getDailyPomodoroForStatsTest })(Stats);
 
