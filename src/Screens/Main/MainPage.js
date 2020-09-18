@@ -12,11 +12,11 @@ const MainPage = (props) => {
 
   const [startStop, setStartStop] = useState(false);
 
-  // const [minutes, setMinutes] = useState(props.user.worktime);
-  // const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState(props.user.worktime);
+  const [seconds, setSeconds] = useState(0);
 
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(2);
+  // const [minutes, setMinutes] = useState(0);
+  // const [seconds, setSeconds] = useState(2);
 
   const [goal, setGoal] = useState(props.user.dailygoal);
   const [dailyWork, setDailyWork] = useState();
@@ -25,6 +25,8 @@ const MainPage = (props) => {
 
 
   useEffect(() => {
+
+
     let params = {
       userid: props.user.uid,
       date: new Date().toLocaleDateString()
@@ -40,10 +42,10 @@ const MainPage = (props) => {
     if (startStop) {
       if (dailyWork == goal) {
         setStartStop(!startStop)
-        // setMinutes(props.user.worktime)
-        // setSeconds(0)
-        setMinutes(0)
-        setSeconds(2)
+        setMinutes(props.user.worktime)
+        setSeconds(0)
+        // setMinutes(0)
+        // setSeconds(2)
         Alert.alert('Bugünlük hedefinizi tamamladınız!!!')
       }
       interval = setInterval(() => {
@@ -56,21 +58,21 @@ const MainPage = (props) => {
           // Vibration.vibrate();
           setIsRest('Rest');
           changeColor();
-          // setMinutes(props.user.resttime)
-          // setSeconds(0)
+          setMinutes(props.user.resttime)
+          setSeconds(0)
 
-          setMinutes(0)
-          setSeconds(2)
+          // setMinutes(0)
+          // setSeconds(2)
         }
         else if (seconds == 0 && minutes == 0 && isRest == 'Rest') {
           // Vibration.vibrate();
           setIsRest('Work');
           changeColor();
-          // setMinutes(props.user.worktime)
-          // setSeconds(0)
+          setMinutes(props.user.worktime)
+          setSeconds(0)
 
-          setMinutes(0)
-          setSeconds(2)
+          // setMinutes(0)
+          // setSeconds(2)
 
           setDailyWork(dailyWork => dailyWork + 1)
           const daily = dailyWork + 1;
@@ -102,6 +104,12 @@ const MainPage = (props) => {
     }
   }
 
+  const resetTimer = () => {
+    setMinutes(props.user.worktime);
+    setSeconds(0)
+    setStartStop(!startStop)
+    Alert.alert('Sıfırlama', 'Sayaç sıfırlanmıştır.')
+  }
 
   // useEffect(() => {
   //   let interval = null
@@ -152,7 +160,7 @@ const MainPage = (props) => {
             (<Image style={styles.playImage} source={require('../../images/play-button.png')} />)
           }
         </TouchableOpacity>
-        <TouchableOpacity style={styles.startStopButton} onPress={() => alert('reset')}>
+        <TouchableOpacity style={styles.startStopButton} onPress={() => resetTimer()}>
           <Image style={styles.playImage} source={require('../../images/power-button.png')} />
         </TouchableOpacity>
       </View>
