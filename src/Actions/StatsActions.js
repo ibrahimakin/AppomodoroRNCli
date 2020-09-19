@@ -5,7 +5,11 @@ import {
 
     GET_ACHIEVEMENT_LIST_START,
     GET_ACHIEVEMENT_LIST_SUCCESS,
-    GET_ACHIEVEMENT_LIST_FAILED
+    GET_ACHIEVEMENT_LIST_FAILED,
+
+    GET_POMODORO_STATS_GRAPH_START,
+    GET_POMODORO_STATS_GRAPH_SUCCESS,
+    GET_POMODORO_STATS_GRAPH_FAILED
 } from './types'
 
 import firestore from '@react-native-firebase/firestore';
@@ -20,7 +24,6 @@ export const getDailyPomodoroForStats = (params) => {
             .doc(params.userid)
             .get()
             .then((dailyPomodoro) => {
-                console.log('Gelen Data: ', dailyPomodoro);
                 dispatch({ type: GET_POMODORO_STATS_SUCCESS, payload: dailyPomodoro })
             }).catch((err) => {
                 console.log('Read Data error: ', err);
@@ -54,15 +57,12 @@ export const getAchievementList = () => {
 
 
 export const getDailyPomodoroForStatsTest = (params) => {
-    console.log(params.userid)
     return (dispatch) => {
         firestore()
             .collection('DailyPomodoroTest')
             .doc(params.userid)
             .get()
             .then((dailyPomodoro) => {
-                // console.log('Gelen Data: ', dailyPomodoro._data.DailyWorkArray);
-
                 let timeStampArray = dailyPomodoro._data.DailyWorkArray;
                 let dateArray = [];
 
@@ -75,7 +75,6 @@ export const getDailyPomodoroForStatsTest = (params) => {
                     return false;
 
                 });
-                console.log('dateArrauy', dateArray)
                 dispatch({ type: GET_POMODORO_STATS_SUCCESS, payload: dateArray })
             }).catch((err) => {
                 console.log('Read Data error: ', err);
@@ -83,5 +82,26 @@ export const getDailyPomodoroForStatsTest = (params) => {
             })
     }
 }
+
+export const getDailyPomodoroForGraphic = (params) => {
+    return (dispatch) => {
+        firestore()
+            .collection('DailyPomodoroTest')
+            .doc(params.userid)
+            .get()
+            .then((dailyPomodoro) => {
+                let dateArrayGraph = [];
+                dailyPomodoro._data.DailyWorkArray.forEach((arr) => {
+                    dateArrayGraph.push(arr.toDate().toLocaleDateString())
+                })
+
+                dispatch({ type: GET_POMODORO_STATS_GRAPH_SUCCESS, payload: dateArrayGraph })
+            }).catch((err) => {
+                console.log('Read Data error: ', err);
+                dispatch({ type: GET_POMODORO_STATS_GRAPH_FAILED })
+            })
+    }
+}
+
 
 

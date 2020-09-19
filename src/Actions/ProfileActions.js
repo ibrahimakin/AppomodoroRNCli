@@ -15,7 +15,7 @@ import { utils } from '@react-native-firebase/app';
 export const getUserInfo = (params) => {
     return (dispatch) => {
 
-        /*dispatch({ type: GET_USERINFO_START });
+        dispatch({ type: GET_USERINFO_START });
         const uid = params.uid;
 
         firestore()
@@ -26,7 +26,7 @@ export const getUserInfo = (params) => {
                 console.log('USER INFO get!', userInfo);
 
                 const userParams = {
-                    ...user._data,
+                    ...userInfo._data,
                     uid
                 }
 
@@ -37,7 +37,7 @@ export const getUserInfo = (params) => {
             }).catch(() => {
                 console.log('USER INFO not added');
                 dispatch({ type: GET_USERINFO_FAILED });
-            });*/
+            });
     }
 }
 
